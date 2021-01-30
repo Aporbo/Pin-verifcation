@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="top" class="row">
+            <div   class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="pin" class="form-control" type="text">
+                    <button onclick="getPin()" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="display-pin" class="form-control" type="text">
+                    <div class="numbers">
+                        <div  id="typed-pin" class="calc-body">
+                            <div class="calc-button-row">
+                                <div class="button">7</div>
+                                <div class="button">8</div>
+                                <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">4</div>
+                                <div class="button">5</div>
+                                <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">1</div>
+                                <div class="button">2</div>
+                                <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">B</div>
+                                        <div class="button">0</div>
+                                        <div class="button">C</div>
+                                </div>
+                                <div>
+                                    <button id="submitBtn" type="submit" class="submit-btn">Submit</button>
+                                    <p class="action-left"> <span id="countErorr" >3</span> try left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notify-section">
+                    <p id="didNotMatched" class="notify">❌ Pin Didn't Match, Please try again</p>
+                    <p id="matched" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+                </div>
+            </div>
+</body>
+<script>
+
+    function generate() {
+        var randomNumber = Math.random() * 10000;
+        var randomString = (randomNumber + ' ').split('.')[0];
+        if (randomString.length === 4) {
+            return randomString;
+        }
+        else {
+            return generate();
+        }
+    }
+    function getPin() {
+        var pin = document.getElementById("pin");
+        pin.value = generate();
+    }
+    var click = document.getElementById("typed-pin");
+    click.addEventListener("click",function(event){
+        var typed = (event.target.innerText);
+        if(isNaN(typed)){
+            if(typed=="B"){
+                let typedPin = document.getElementById("display-pin");
+              typedPin.value = typedPin.value.slice(0, - 1);
+            }
+             if(typed =="C"){
+                let typedPin = document.getElementById("display-pin");
+              typedPin.value = " ";
+                       }
+        }
+        else{
+            let typedPin = document.getElementById("display-pin");
+            typedPin.value = typedPin.value+typed;
+        }
+    })
+
+    var submitBtn = document.getElementById("submitBtn");
+    submitBtn.addEventListener("click",function(){
+        var generated = document.getElementById("pin").value;
+        var inputed = document.getElementById("display-pin").value;
+        if(generated==inputed){
+            document.getElementById("matched").style.display = "block";
+            document.getElementById("didNotMatched").style.display = "none";      
+        }
+        else{
+            var erorrCount = document.getElementById("countErorr").innerText;
+            var erorrCountNumber = parseInt(erorrCount);
+            if(erorrCountNumber ==3){
+                document.getElementById("matched").style.display = "none";
+                document.getElementById("didNotMatched").style.display = "block";
+                document.getElementById("countErorr").innerText ="2";
+            }
+            else if(erorrCountNumber ==2){
+                document.getElementById("matched").style.display = "none";
+                document.getElementById("didNotMatched").style.display = "block";
+                document.getElementById("countErorr").innerText ="1";
+            }
+            else if(erorrCountNumber ==1){
+                document.getElementById("matched").style.display = "none";
+                document.getElementById("didNotMatched").style.display = "block";
+                document.getElementById("countErorr").innerText ="0";
+            }
+            else if(erorrCountNumber ==0){
+                
+                document.getElementById("countErorr").innerText ="sorry! you tried 3 times. reload and try again";
+            }
+            
+        }
+
+    })
+
+</script>
+
+</html>
