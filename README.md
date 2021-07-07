@@ -1,3 +1,3 @@
 # Pin-verification
-# javascript practice
-[Click](https://aporbo.github.io/pin-verify/)
+# Javascript practice
+[Visit](https://aporbo.github.io/pin-verify/)
